@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Generator Kombinasi Angka Lengkap</title>
+  <style>
+    body { font-family: Arial; background-color: #f9f9f9; padding: 20px; }
+    h2 { text-align: center; }
+    textarea { width: 95%; font-size: 13px; margin: 10px auto; display: block; }
+    input[type="number"], select, input[type="button"], input[type="submit"] {
+      margin: 5px 2px;
+      padding: 5px;
+      font-size: 14px;
+    }
+    .section { border: 1px solid #ccc; padding: 15px; margin-bottom: 25px; background: #fff; }
+    .center { text-align: center; }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Section 1: Generator Kombinasi Bolak Balik -->
+  <div class="section">
+    <h2>💦 Generator Kombinasi Bolak Balik 💦 </h2>
+    <form name="interfaceform">
+      <div class="center">
+        <input maxlength="10" name="inputstring" type="number" placeholder="Masukkan 💦💦💦💦" value=""><br>
+        <select name="maxwidth">
+          <option value="2">2D</option>
+          <option value="3">3D</option>
+          <option value="4" selected>4D</option>
+          <option value="5">5D</option>
+          <option value="6">6D</option>
+        </select>
+        <select id="select1">
+          <option value="">(tanpa spasi)</option>
+          <option value="*">*</option>
+          <option value="#">#</option>
+        </select><br><br>
+        <input onclick="GeneratePermutations()" type="button" value="Generate">
+        <input onclick="ClearReset()" type="button" value="Bersihkan"><br><br>
+        <input name="feedback" readonly style="border: none; background: none; font-weight: bold;"><br>
+        <textarea name="permlist" rows="8" placeholder="Hasil kombinasi akan muncul di sini💦💦💦"></textarea>
+      </div>
+    </form>
+  </div>
+
+  <!-- ✅ Section 2: Generator Kombinasi AS-KOP-KEPALA-EKOR -->
+  <div class="section">
+    <h2>🔥 Generator Kombinasi AS - KOP - KEPALA - EKOR 🔥</h2>
+    <form oninput="str.value = AS.value + ',' + COP.value + ',' + KEP.value + ',' + EKOR.value"
+          onsubmit="return combineApp.calcCombinations({src:this.str,dest:this.txt,msgID:'count'});">
+
+      <div class="center">
+        <input class="ack" maxlength="10" name="AS" placeholder="AS" type="number"><br>
+        <input class="ack" maxlength="10" name="COP" placeholder="KOP" type="number"><br>
+        <input class="ack" maxlength="10" name="KEP" placeholder="KEPALA" type="number"><br>
+        <input class="ack" maxlength="10" name="EKOR" placeholder="EKOR" type="number"><br>
+
+        <select id="select2">
+          <option value="">(tanpa pemisah)</option>
+          <option value="*">*</option>
+          <option value="#">#</option>
+        </select><br><br>
+
+        <input id="str" name="str" type="hidden">
+        <input type="submit" value="Generate">
+        <input onclick="trimSpaces();" type="button" value="Hilangkan Spasi"><br><br>
+
+        <b><i id="count">Belum ada kombinasi 🔥</i></b><br>
+        <textarea cols="30" id="textString" name="txt" rows="8"></textarea>
+      </div>
+    </form>
+  </div>
+
+  <!-- ✅ Script Bagian Bawah -->
+  <script>
+    // Script Permutasi Bolak Balik
+    function GeneratePermutations() {
+      const form = document.forms['interfaceform'];
+      const input = form.inputstring.value.trim();
+      const maxWidth = parseInt(form.maxwidth.value);
+      const separator = document.getElementById('select1').value;
+      const resultArea = form.permlist;
+      const feedback = form.feedback;
+
+      if (!input || input.length < maxWidth) {
+        feedback.value = "⚠️ Masukkan angka minimal sepanjang " + maxWidth + " digit.";
+        resultArea.value = "";
+        return;
+      }
+
+      let results = getPermutations(input, maxWidth);
+      if (separator) {
+        results = results.map(val => val.split('').join(separator));
+      }
+
+      resultArea.value = results.join("\n");
+      feedback.value = results.length + " kombinasi";
+    }
+
+    function ClearReset() {
+      const form = document.forms['interfaceform'];
+      form.inputstring.value = "";
+      form.permlist.value = "";
+      form.feedback.value = "";
+    }
+
+    function getPermutations(input, length) {
+      const result = new Set();
+      function permute(path, used) {
+        if (path.length === length) {
+          result.add(path.join(''));
+          return;
+        }
+        for (let i = 0; i < input.length; i++) {
+          if (used[i]) continue;
+          used[i] = true;
+          path.push(input[i]);
+          permute(path, used);
+          path.pop();
+          used[i] = false;
+        }
+      }
+      permute([], []);
+      return Array.from(result);
+    }
+
+    // Script Kombinasi AS-KOP-KEPALA-EKOR
+    const combineApp = {
+      calcCombinations: function({ src, dest, msgID }) {
+        let values = src.value.split(",").map(x => x.trim());
+        let [as, kop, kep, ekor] = values;
+        const operator = document.getElementById("select2").value;
+        let result = [];
+
+        if (as && kop && kep && ekor) {
+          for (let a of as) {
+            for (let k of kop) {
+              for (let h of kep) {
+                for (let e of ekor) {
+                  result.push(`${a}${operator}${k}${operator}${h}${operator}${e}`);
+                }
+              }
+            }
+          }
+          document.getElementById(msgID).innerHTML =
+            result.length + ` kombinasi dari "[${as}][${kop}][${kep}][${ekor}]"`;
+        }
+        else if (!as && kop && kep && ekor) {
+          for (let k of kop) {
+            for (let h of kep) {
+              for (let e of ekor) {
+                result.push(`${k}${operator}${h}${operator}${e}`);
+              }
+            }
+          }
+          document.getElementById(msgID).innerHTML =
+            result.length + ` kombinasi dari "[${kop}][${kep}][${ekor}]" (3 digit)`;
+        }
+        else if (!as && !kop && kep && ekor) {
+          for (let h of kep) {
+            for (let e of ekor) {
+              result.push(`${h}${operator}${e}`);
+            }
+          }
+          document.getElementById(msgID).innerHTML =
+            result.length + ` kombinasi dari "[${kep}][${ekor}]" (2 digit)`;
+        } else {
+          document.getElementById(msgID).innerHTML = "Isi minimal KEPALA dan EKOR!";
+        }
+
+        dest.value = result.join("\n");
+        return false;
+      }
+    };
+
+    function trimSpaces() {
+      const txt = document.getElementById("textString");
+      txt.value = txt.value.replace(/\s+/g, "");
+    }
+  </script>
+
+</body>
+</html>
