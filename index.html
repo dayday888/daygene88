@@ -7,27 +7,50 @@
     body {
       font-family: Arial;
       padding: 20px;
-      background-image: url('effect.png'); /* Gambar local */
+      background-image: url('effect.png'); /* Gambar lokal */
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-position: center;
     }
 
-    h2 { text-align: center; }
-    textarea { width: 95%; font-size: 13px; margin: 10px auto; display: block; }
-    input[type="number"], select, input[type="button"], input[type="submit"] {
+    h2 {
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 100%;
+      font-size: 13px;
+      margin: 10px auto;
+      display: block;
+      box-sizing: border-box;
+    }
+
+    input[type="number"],
+    select,
+    input[type="button"],
+    input[type="submit"] {
       margin: 5px 2px;
       padding: 5px;
       font-size: 14px;
     }
+
     .section {
       border: 1px solid #ccc;
       padding: 15px;
       margin-bottom: 25px;
-      background: rgba(255, 255, 255, 0.85); /* Supaya form tetap bisa dibaca */
+      background: rgba(255, 255, 255, 0.85);
     }
-    .center { text-align: center; }
+
+    .center {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
   </style>
 </head>
 
@@ -35,7 +58,7 @@
 
   <!-- ✅ Section 1: Generator Kombinasi Bolak Balik -->
   <div class="container section">
-    <h2>💦 Generator Kombinasi Bolak Balik 💦 </h2>
+    <h2>💦 Generator Kombinasi Bolak Balik 💦</h2>
     <form name="interfaceform">
       <div class="center">
         <input maxlength="10" name="inputstring" type="number" placeholder="Masukkan 💦💦💦💦" value=""><br>
@@ -61,7 +84,7 @@
 
   <!-- ✅ Section 2: Generator Kombinasi AS-KOP-KEPALA-EKOR -->
   <div class="container section">
-    <h2>🔥 Generator Kombinasi AS - KOP - KEPALA - EKOR 🔥</h2>
+    <h2>🔥 Generator Kombinasi AS-KOP-KEPALA-EKOR 🔥</h2>
     <form oninput="str.value = AS.value + ',' + COP.value + ',' + KEP.value + ',' + EKOR.value"
           onsubmit="return combineApp.calcCombinations({src:this.str,dest:this.txt,msgID:'count'});">
 
@@ -89,7 +112,6 @@
 
   <!-- ✅ Script Bagian Bawah -->
   <script>
-    // Script Permutasi Bolak Balik
     function GeneratePermutations() {
       const form = document.forms['interfaceform'];
       const input = form.inputstring.value.trim();
@@ -140,7 +162,6 @@
       return Array.from(result);
     }
 
-    // Script Kombinasi AS-KOP-KEPALA-EKOR
     const combineApp = {
       calcCombinations: function({ src, dest, msgID }) {
         let values = src.value.split(",").map(x => x.trim());
