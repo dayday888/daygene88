@@ -1,27 +1,4 @@
 <!DOCTYPE html>
-<style>
-  body {
-    font-family: Arial;
-    padding: 20px;
-    background-image: url('effect.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    color: white;
-  }
-
-  h2 { text-align: center; }
-  .section {
-    border: 1px solid #ccc;
-    background: rgba(36, 90, 128, 0.8); /* transparansi agar tidak menyatu dengan background */
-    margin: 20px 0;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  /* sisanya tetap sama... */
-</style>
-
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -33,7 +10,18 @@
       color: white;
       padding: 20px;
     }
-    h2 { text-align: center; }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      transform: scale(0.9);
+      transform-origin: top center;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
     .section {
       border: 1px solid #ccc;
       background: #245a80;
@@ -41,16 +29,19 @@
       padding: 20px;
       border-radius: 8px;
     }
+
     .form-group, .bet-group {
       max-width: 500px;
       margin: 10px auto;
       display: flex;
       align-items: center;
     }
+
     .form-group label, .bet-group label {
       width: 100px;
       font-weight: bold;
     }
+
     .form-group input, .bet-group input, select {
       flex: 1;
       height: 30px;
@@ -60,12 +51,14 @@
       border: none;
       border-radius: 5px;
     }
+
     textarea {
       width: 100%;
       margin-top: 10px;
       height: 150px;
       font-size: 14px;
     }
+
     button, input[type="button"], input[type="submit"] {
       padding: 10px 20px;
       margin: 10px 5px;
@@ -76,101 +69,107 @@
       color: white;
       cursor: pointer;
     }
+
     table {
       width: 100%;
       margin-top: 20px;
       border-collapse: collapse;
       background: #103347;
     }
+
     th, td {
       border: 1px solid #ffffff22;
       padding: 8px;
       text-align: center;
     }
+
     th {
       background-color: #1f5d7a;
     }
   </style>
 </head>
 <body>
+  <div class="container">
 
-  <!-- 🔁 Generator Kombinasi Bolak Balik -->
-  <div class="section">
-    <h2>🔁 Generator Kombinasi Bolak Balik</h2>
-    <form name="interfaceform">
-      <div class="form-group">
-        <label>Angka:</label>
-        <input maxlength="10" name="inputstring" type="text" placeholder="contoh: 1234">
-      </div>
-      <div class="form-group">
-        <label>Panjang:</label>
-        <select name="maxwidth">
-          <option value="2">2D</option>
-          <option value="3">3D</option>
-          <option value="4" selected>4D</option>
-        </select>
-        <select id="select1">
-          <option value="">Tanpa pemisah</option>
-          <option value="*">*</option>
-          <option value="#">#</option>
-        </select>
-      </div>
-      <div class="form-group center">
-        <input onclick="GeneratePermutations()" type="button" value="Generate">
-        <input onclick="ClearReset()" type="button" value="Bersihkan">
-      </div>
-      <div class="form-group">
-        <input name="feedback" readonly style="border: none; background: none; font-weight: bold; color: #ff0;">
-      </div>
-      <textarea name="permlist" placeholder="Hasil kombinasi..."></textarea>
-    </form>
-  </div>
-
-  <!-- 🔥 Generator Kombinasi AS-KOP-KEPALA-EKOR -->
-  <div class="section">
-    <h2>🔥 Kombinasi AS - KOP - KEPALA - EKOR</h2>
-    <form oninput="str.value = AS.value + ',' + COP.value + ',' + KEP.value + ',' + EKOR.value"
-          onsubmit="return combineApp.calcCombinations({src:this.str,dest:this.txt,msgID:'count'});">
-      <div class="form-group"><label>AS:</label><input name="AS" type="text"></div>
-      <div class="form-group"><label>KOP:</label><input name="COP" type="text"></div>
-      <div class="form-group"><label>KEPALA:</label><input name="KEP" type="text"></div>
-      <div class="form-group"><label>EKOR:</label><input name="EKOR" type="text"></div>
-      <div class="form-group"><label>Pemisah:</label>
-        <select id="select2">
-          <option value="">Tanpa pemisah</option>
-          <option value="*">*</option>
-          <option value="#">#</option>
-        </select>
-      </div>
-      <input id="str" name="str" type="hidden">
-      <div class="form-group center">
-        <input type="submit" value="Generate">
-        <input type="button" onclick="trimSpaces()" value="Hapus Spasi">
-      </div>
-      <div class="form-group"><b><i id="count">Belum ada kombinasi 🔥</i></b></div>
-      <textarea id="textString" name="txt"></textarea>
-    </form>
-  </div>
-
-  <!-- 💰 Total Tebakan dan Biaya -->
-  <div class="section">
-    <h2>💰 Hitung Total Tebakan</h2>
-    <div class="form-group"><label>AS:</label><input id="r1" type="text"></div>
-    <div class="form-group"><label>KOP:</label><input id="r2" type="text"></div>
-    <div class="form-group"><label>KEPALA:</label><input id="r3" type="text"></div>
-    <div class="form-group"><label>EKOR:</label><input id="r4" type="text"></div>
-
-    <div class="bet-group">
-      <label>4D: <input id="beli-4dset" value="340"></label>
-      <label>3D: <input id="beli-3dset" value="410"></label>
-      <label>2D: <input id="beli-2dset" value="710"></label>
+    <!-- 🔁 Generator Kombinasi Bolak Balik -->
+    <div class="section">
+      <h2>🔁 Generator Kombinasi Bolak Balik</h2>
+      <form name="interfaceform">
+        <div class="form-group">
+          <label>Angka:</label>
+          <input maxlength="10" name="inputstring" type="text" placeholder="contoh: 1234">
+        </div>
+        <div class="form-group">
+          <label>Panjang:</label>
+          <select name="maxwidth">
+            <option value="2">2D</option>
+            <option value="3">3D</option>
+            <option value="4" selected>4D</option>
+          </select>
+          <select id="select1">
+            <option value="">Tanpa pemisah</option>
+            <option value="*">*</option>
+            <option value="#">#</option>
+          </select>
+        </div>
+        <div class="form-group center">
+          <input onclick="GeneratePermutations()" type="button" value="Generate">
+          <input onclick="ClearReset()" type="button" value="Bersihkan">
+        </div>
+        <div class="form-group">
+          <input name="feedback" readonly style="border: none; background: none; font-weight: bold; color: #ff0;">
+        </div>
+        <textarea name="permlist" placeholder="Hasil kombinasi..."></textarea>
+      </form>
     </div>
 
-    <div class="form-group center">
-      <button onclick="generateCombinations()">Proses Hitung</button>
+    <!-- 🔥 Generator Kombinasi AS-KOP-KEPALA-EKOR -->
+    <div class="section">
+      <h2>🔥 Kombinasi AS - KOP - KEPALA - EKOR</h2>
+      <form oninput="str.value = AS.value + ',' + COP.value + ',' + KEP.value + ',' + EKOR.value"
+            onsubmit="return combineApp.calcCombinations({src:this.str,dest:this.txt,msgID:'count'});">
+        <div class="form-group"><label>AS:</label><input name="AS" type="text"></div>
+        <div class="form-group"><label>KOP:</label><input name="COP" type="text"></div>
+        <div class="form-group"><label>KEPALA:</label><input name="KEP" type="text"></div>
+        <div class="form-group"><label>EKOR:</label><input name="EKOR" type="text"></div>
+        <div class="form-group"><label>Pemisah:</label>
+          <select id="select2">
+            <option value="">Tanpa pemisah</option>
+            <option value="*">*</option>
+            <option value="#">#</option>
+          </select>
+        </div>
+        <input id="str" name="str" type="hidden">
+        <div class="form-group center">
+          <input type="submit" value="Generate">
+          <input type="button" onclick="trimSpaces()" value="Hapus Spasi">
+        </div>
+        <div class="form-group"><b><i id="count">Belum ada kombinasi 🔥</i></b></div>
+        <textarea id="textString" name="txt"></textarea>
+      </form>
     </div>
 
-    <div id="output"></div>
+    <!-- 💰 Total Tebakan dan Biaya -->
+    <div class="section">
+      <h2>💰 Hitung Total Tebakan</h2>
+      <div class="form-group"><label>AS:</label><input id="r1" type="text"></div>
+      <div class="form-group"><label>KOP:</label><input id="r2" type="text"></div>
+      <div class="form-group"><label>KEPALA:</label><input id="r3" type="text"></div>
+      <div class="form-group"><label>EKOR:</label><input id="r4" type="text"></div>
+
+      <div class="bet-group">
+        <label>4D: <input id="beli-4dset" value="340"></label>
+        <label>3D: <input id="beli-3dset" value="410"></label>
+        <label>2D: <input id="beli-2dset" value="710"></label>
+      </div>
+
+      <div class="form-group center">
+        <button onclick="generateCombinations()">Proses Hitung</button>
+      </div>
+
+      <div id="output"></div>
+    </div>
+
   </div>
 
   <!-- Script Semua Fitur -->
@@ -291,6 +290,5 @@
       </table>`;
     }
   </script>
-
 </body>
 </html>
