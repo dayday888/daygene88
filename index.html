@@ -1,208 +1,213 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Generator Kombinasi Lengkap</title>
+  <meta charset="UTF-8" />
+  <title>Analisis & Generator Kombinasi</title>
   <style>
+    :root {
+      --bg-color: #121212;
+      --box-color: #1e1e1e;
+      --text-color: #e0e0e0;
+      --input-bg: #2a2a2a;
+      --input-border: #444;
+      --accent-color: #4f83cc;
+      --hover-color: #3c6ca9;
+    }
+    body.light-mode {
+      --bg-color: #f5f5f5;
+      --box-color: #ffffff;
+      --text-color: #1e1e1e;
+      --input-bg: #f0f0f0;
+      --input-border: #ccc;
+      --accent-color: #4f83cc;
+      --hover-color: #336699;
+    }
+    * { transition: all 0.3s ease-in-out; }
+
     body {
-      font-family: Arial, sans-serif;
-      background-image: url('effect.png'); /* Gambar lokal di folder yang sama */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: white;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
       padding: 20px;
-    }
-
-    h2 {
-      text-align: center;
-    }
-
-    .section {
-      border: 1px solid #ccc;
-      background: rgba(36, 90, 128, 0.85); /* transparan agar background terlihat */
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 600px;
-    }
-
-    .form-group, .bet-group {
-      max-width: 500px;
-      margin: 10px auto;
       display: flex;
-      align-items: center;
+      justify-content: center;
+
+      /* 🖼️ Background Gambar */
+      background-image: url("effect.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
     }
 
-    .form-group label, .bet-group label {
-      width: 100px;
-      font-weight: bold;
-    }
-
-    .form-group input, .bet-group input, select {
-      flex: 1;
-      height: 30px;
-      font-size: 16px;
-      margin-left: 10px;
-      padding: 5px;
-      border: none;
-      border-radius: 5px;
-    }
-
-    textarea {
+    .container {
       width: 100%;
-      margin-top: 10px;
-      height: 150px;
-      font-size: 14px;
-      border-radius: 5px;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
     }
 
-    button, input[type="button"], input[type="submit"] {
-      padding: 10px 20px;
-      margin: 10px 5px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      background-color: #3380a1;
-      color: white;
-      cursor: pointer;
+    .box {
+      background: var(--box-color);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
+
+    h2, h3 { text-align: center; margin-top: 0; }
 
     table {
       width: 100%;
-      margin-top: 20px;
       border-collapse: collapse;
-      background: rgba(16, 51, 71, 0.85);
+      margin: 10px 0 20px 0;
     }
 
     th, td {
-      border: 1px solid #ffffff22;
+      border: 1px solid var(--input-border);
       padding: 8px;
       text-align: center;
     }
 
-    th {
-      background-color: #1f5d7a;
+    th { background-color: var(--accent-color); color: white; }
+
+    textarea, input, select, button {
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: 1px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      box-sizing: border-box;
     }
+
+    .flex-row { display: flex; gap: 10px; }
+    .flex-row > div { flex: 1; }
+
+    button {
+      background-color: var(--accent-color);
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover { background-color: var(--hover-color); }
+
+    .toggle-mode {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    #feedback { color: var(--accent-color); font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="toggle-mode">
+      <button onclick="document.body.classList.toggle('light-mode')">🌗 Ganti Mode</button>
+    </div>
 
-    <!-- 🔁 Generator Kombinasi Bolak Balik -->
-    <div class="section">
-      <h2>🔁 Generator Kombinasi Bolak Balik</h2>
-      <form name="interfaceform">
-        <div class="form-group">
-          <label>Angka:</label>
-          <input maxlength="10" name="inputstring" type="text" placeholder="contoh: 1234">
-        </div>
-        <div class="form-group">
+    <div class="box">
+      <h2>📊 Analisis Tebakan Angka 📊 </h2>
+      <textarea id="inputTebakan" placeholder="Contoh:
+1234
+4321
+1245"></textarea>
+      <div class="flex-row">
+        <button onclick="proses()">🔍 Proses</button>
+        <button onclick="toggleTebakan()">👁️‍🗨️ Sembunyikan/Tampilkan Hasil</button>
+      </div>
+      <h3>Hasil Tebakan</h3>
+      <table id="hasilTebakan">
+        <tr><th>No</th><th>Tebakan</th><th>AS</th><th>KOP</th><th>KEPALA</th><th>EKOR</th></tr>
+      </table>
+      <h3>Jumlah Digit </h3>
+      <table><tr><th>AS</th><th>KOP</th><th>KEPALA</th><th>EKOR</th></tr><tr id="jumlahDigit"><td>0</td><td>0</td><td>0</td><td>0</td></tr></table>
+      <h3>Jumlah Line</h3>
+      <table><tr><th>4D</th><th>3D</th><th>2D</th></tr><tr id="jumlahLine"><td>0</td><td>0</td><td>0</td></tr></table>
+      <p><strong>AS:</strong> <span id="listAs"></span></p>
+      <p><strong>KOP:</strong> <span id="listKop"></span></p>
+      <p><strong>KEPALA:</strong> <span id="listKepala"></span></p>
+      <p><strong>EKOR:</strong> <span id="listEkor"></span></p>
+    </div>
+
+    <div class="box">
+      <h2>🔁 Generator Bolak Balik 🔁</h2>
+      <input id="inputstring" placeholder="contoh: 1234">
+      <div class="flex-row">
+        <div>
           <label>Panjang:</label>
-          <select name="maxwidth">
+          <select id="maxwidth">
             <option value="2">2D</option>
             <option value="3">3D</option>
             <option value="4" selected>4D</option>
           </select>
+        </div>
+        <div>
+          <label>Pemisah:</label>
           <select id="select1">
             <option value="">Tanpa pemisah</option>
             <option value="*">*</option>
             <option value="#">#</option>
           </select>
         </div>
-        <div class="form-group center">
-          <input onclick="GeneratePermutations()" type="button" value="Generate">
-          <input onclick="ClearReset()" type="button" value="Bersihkan">
-        </div>
-        <div class="form-group">
-          <input name="feedback" readonly style="border: none; background: none; font-weight: bold; color: #ff0;">
-        </div>
-        <textarea name="permlist" placeholder="Hasil kombinasi disini bosku 💦"></textarea>
-      </form>
-    </div>
-
-    <!-- 🔥 Generator Kombinasi AS-KOP-KEPALA-EKOR -->
-    <div class="section">
-      <h2>🔥 Kombinasi AS - KOP - KEPALA - EKOR</h2>
-      <form oninput="str.value = AS.value + ',' + COP.value + ',' + KEP.value + ',' + EKOR.value"
-            onsubmit="return combineApp.calcCombinations({src:this.str,dest:this.txt,msgID:'count'});">
-        <div class="form-group"><label>AS:</label><input name="AS" type="text"></div>
-        <div class="form-group"><label>KOP:</label><input name="COP" type="text"></div>
-        <div class="form-group"><label>KEPALA:</label><input name="KEP" type="text"></div>
-        <div class="form-group"><label>EKOR:</label><input name="EKOR" type="text"></div>
-        <div class="form-group"><label>Pemisah:</label>
-          <select id="select2">
-            <option value="">Tanpa pemisah</option>
-            <option value="*">*</option>
-            <option value="#">#</option>
-          </select>
-        </div>
-        <input id="str" name="str" type="hidden">
-        <div class="form-group center">
-          <input type="submit" value="Generate">
-          <input type="button" onclick="trimSpaces()" value="Hapus Spasi">
-        </div>
-        <div class="form-group"><b><i id="count">Belum ada kombinasi bosku 🔥</i></b></div>
-        <textarea id="textString" name="txt"></textarea>
-      </form>
-    </div>
-
-    <!-- 💰 Total Tebakan dan Biaya -->
-    <div class="section">
-      <h2>💰 Hitung Total Tebakan</h2>
-      <div class="form-group"><label>AS:</label><input id="r1" type="text"></div>
-      <div class="form-group"><label>KOP:</label><input id="r2" type="text"></div>
-      <div class="form-group"><label>KEPALA:</label><input id="r3" type="text"></div>
-      <div class="form-group"><label>EKOR:</label><input id="r4" type="text"></div>
-
-     <div class="bet-group">
-  <label>4D: <input id="beli-4dset" placeholder="100" value=""></label>
-  <label>3D: <input id="beli-3dset" placeholder="100" value=""></label>
-  <label>2D: <input id="beli-2dset" placeholder="100" value=""></label>
-	</div>
-
-      <div class="form-group center">
-        <button onclick="generateCombinations()">Proses Hitung</button>
       </div>
+      <div class="flex-row">
+        <button onclick="GeneratePermutations()">Generate</button>
+        <button onclick="ClearReset()">Bersihkan</button>
+      </div>
+      <p id="feedback"></p>
+      <textarea id="permlist" placeholder="Hasil kombinasi..."></textarea>
+    </div>
 
+    <div class="box">
+      <h2>💰 Generator Angka Tarung 💰</h2>
+      <input id="r1" placeholder="AS">
+      <input id="r2" placeholder="KOP">
+      <input id="r3" placeholder="KEPALA">
+      <input id="r4" placeholder="EKOR">
+      <div class="flex-row">
+        <input id="beli-4dset" placeholder="Harga 4D">
+        <input id="beli-3dset" placeholder="Harga 3D">
+        <input id="beli-2dset" placeholder="Harga 2D">
+      </div>
+      <button onclick="generateCombinations()">Proses Hitung</button>
       <div id="output"></div>
     </div>
-
   </div>
 
-  <!-- Script Semua Fitur -->
   <script>
-    function GeneratePermutations() {
-      const form = document.forms['interfaceform'];
-      const input = form.inputstring.value.trim();
-      const maxWidth = parseInt(form.maxwidth.value);
-      const separator = document.getElementById('select1').value;
-      const resultArea = form.permlist;
-      const feedback = form.feedback;
-
-      if (!input || input.length < maxWidth) {
-        feedback.value = "⚠️ Masukkan angka minimal sepanjang " + maxWidth + " digit.";
-        resultArea.value = "";
-        return;
-      }
-
-      let results = getPermutations(input, maxWidth);
-      if (separator) {
-        results = results.map(val => val.split('').join(separator));
-      }
-
-      resultArea.value = results.join("\n");
-      feedback.value = results.length + " kombinasi";
+    function proses() {
+      const input = document.getElementById("inputTebakan").value.trim().split(/\s*[\n,]+\s*/);
+      const hasilTabel = document.getElementById("hasilTebakan");
+      hasilTabel.innerHTML = `<tr><th>No</th><th>Tebakan</th><th>AS</th><th>KOP</th><th>KEPALA</th><th>EKOR</th></tr>`;
+      let AS = [], KOP = [], KEPALA = [], EKOR = [];
+      let count4D = 0, count3D = 0, count2D = 0;
+      input.forEach((angka, index) => {
+        angka = angka.trim();
+        if (!angka.match(/^\d{2,4}$/)) return;
+        let [as='', kop='', kepala='', ekor=''] = ['', '', '', ''];
+        if (angka.length === 4) [as, kop, kepala, ekor] = angka, count4D++;
+        else if (angka.length === 3) [kop, kepala, ekor] = angka, count3D++;
+        else if (angka.length === 2) [kepala, ekor] = angka, count2D++;
+        AS.push(as); KOP.push(kop); KEPALA.push(kepala); EKOR.push(ekor);
+        hasilTabel.innerHTML += `<tr><td>${index+1}</td><td>${angka}</td><td>${as}</td><td>${kop}</td><td>${kepala}</td><td>${ekor}</td></tr>`;
+      });
+      const unique = arr => [...new Set(arr.filter(v => v))].sort();
+      document.getElementById("jumlahDigit").innerHTML = `<td>${unique(AS).length}</td><td>${unique(KOP).length}</td><td>${unique(KEPALA).length}</td><td>${unique(EKOR).length}</td>`;
+      document.getElementById("jumlahLine").innerHTML = `<td>${count4D}</td><td>${count3D}</td><td>${count2D}</td>`;
+      document.getElementById("listAs").textContent = unique(AS).join(', ');
+      document.getElementById("listKop").textContent = unique(KOP).join(', ');
+      document.getElementById("listKepala").textContent = unique(KEPALA).join(', ');
+      document.getElementById("listEkor").textContent = unique(EKOR).join(', ');
     }
-
-    function ClearReset() {
-      const form = document.forms['interfaceform'];
-      form.inputstring.value = "";
-      form.permlist.value = "";
-      form.feedback.value = "";
+    function toggleTebakan() {
+      const table = document.getElementById("hasilTebakan");
+      table.style.display = table.style.display === "none" ? "table" : "none";
     }
-
     function getPermutations(input, length) {
       const result = new Set();
       function permute(path, used) {
@@ -222,71 +227,53 @@
       permute([], []);
       return Array.from(result);
     }
-
-    const combineApp = {
-      calcCombinations: function({ src, dest, msgID }) {
-        let values = src.value.split(",").map(x => x.trim());
-        let [as, kop, kep, ekor] = values;
-        const op = document.getElementById("select2").value;
-        let result = [];
-
-        if (as && kop && kep && ekor) {
-          for (let a of as) for (let k of kop) for (let h of kep) for (let e of ekor)
-            result.push(`${a}${op}${k}${op}${h}${op}${e}`);
-          document.getElementById(msgID).innerHTML = `${result.length} kombinasi 4D`;
-        } else if (!as && kop && kep && ekor) {
-          for (let k of kop) for (let h of kep) for (let e of ekor)
-            result.push(`${k}${op}${h}${op}${e}`);
-          document.getElementById(msgID).innerHTML = `${result.length} kombinasi 3D`;
-        } else if (!as && !kop && kep && ekor) {
-          for (let h of kep) for (let e of ekor)
-            result.push(`${h}${op}${e}`);
-          document.getElementById(msgID).innerHTML = `${result.length} kombinasi 2D`;
-        } else {
-          document.getElementById(msgID).innerHTML = "Isi minimal KEPALA dan EKOR!";
-        }
-
-        dest.value = result.join("\n");
-        return false;
+    function GeneratePermutations() {
+      const input = document.getElementById("inputstring").value.trim();
+      const maxWidth = parseInt(document.getElementById("maxwidth").value);
+      const separator = document.getElementById("select1").value;
+      const resultArea = document.getElementById("permlist");
+      const feedback = document.getElementById("feedback");
+      if (!input || input.length < maxWidth) {
+        feedback.textContent = `⚠️ Masukkan minimal ${maxWidth} digit.`;
+        resultArea.value = "";
+        return;
       }
-    };
-
-    function trimSpaces() {
-      const txt = document.getElementById("textString");
-      txt.value = txt.value.replace(/\s+/g, "");
+      let results = getPermutations(input, maxWidth);
+      if (separator) results = results.map(x => x.split('').join(separator));
+      resultArea.value = results.join("\n");
+      feedback.textContent = results.length + " kombinasi";
     }
-
+    function ClearReset() {
+      document.getElementById("inputstring").value = "";
+      document.getElementById("permlist").value = "";
+      document.getElementById("feedback").textContent = "";
+    }
     function cartesian(arrays) {
       return arrays.reduce((a, b) => a.flatMap(d => b.map(e => d + e)));
     }
-
     function generateCombinations() {
       const as = document.getElementById('r1').value.split('');
       const kop = document.getElementById('r2').value.split('');
       const kepala = document.getElementById('r3').value.split('');
       const ekor = document.getElementById('r4').value.split('');
-
       const beli4d = parseInt(document.getElementById('beli-4dset').value || 0);
       const beli3d = parseInt(document.getElementById('beli-3dset').value || 0);
       const beli2d = parseInt(document.getElementById('beli-2dset').value || 0);
-
       const comb4D = cartesian([as, kop, kepala, ekor]);
       const comb3D = cartesian([kop, kepala, ekor]);
       const comb2Ddpn = cartesian([as, kop]);
       const comb2Dtgh = cartesian([kop, kepala]);
       const comb2Dblkg = cartesian([kepala, ekor]);
-
       const format = (arr, perLine = 10) => arr.map((v, i) => ((i % perLine === 0 && i !== 0) ? '\n' : '') + v).join(' : ');
-
       document.getElementById("output").innerHTML = `
-      <table>
-        <tr><th>Jumlah</th><th>Kombinasi</th><th>Total</th></tr>
-        <tr><td>${comb4D.length}</td><td>${format(comb4D)}</td><td>${beli4d} x ${comb4D.length} = ${beli4d * comb4D.length}</td></tr>
-        <tr><td>${comb3D.length}</td><td>${format(comb3D)}</td><td>${beli3d} x ${comb3D.length} = ${beli3d * comb3D.length}</td></tr>
-        <tr><td>2D Depan ${comb2Ddpn.length}</td><td>${format(comb2Ddpn)}</td><td>${beli2d} x ${comb2Ddpn.length} = ${beli2d * comb2Ddpn.length}</td></tr>
-        <tr><td>2D Tengah ${comb2Dtgh.length}</td><td>${format(comb2Dtgh)}</td><td>${beli2d} x ${comb2Dtgh.length} = ${beli2d * comb2Dtgh.length}</td></tr>
-        <tr><td>2D Belakang ${comb2Dblkg.length}</td><td>${format(comb2Dblkg)}</td><td>${beli2d} x ${comb2Dblkg.length} = ${beli2d * comb2Dblkg.length}</td></tr>
-      </table>`;
+        <table>
+          <tr><th>Jumlah</th><th>Kombinasi</th><th>Total</th></tr>
+          <tr><td>${comb4D.length}</td><td>${format(comb4D)}</td><td>${beli4d * comb4D.length}</td></tr>
+          <tr><td>${comb3D.length}</td><td>${format(comb3D)}</td><td>${beli3d * comb3D.length}</td></tr>
+          <tr><td>2D Depan ${comb2Ddpn.length}</td><td>${format(comb2Ddpn)}</td><td>${beli2d * comb2Ddpn.length}</td></tr>
+          <tr><td>2D Tengah ${comb2Dtgh.length}</td><td>${format(comb2Dtgh)}</td><td>${beli2d * comb2Dtgh.length}</td></tr>
+          <tr><td>2D Belakang ${comb2Dblkg.length}</td><td>${format(comb2Dblkg)}</td><td>${beli2d * comb2Dblkg.length}</td></tr>
+        </table>`;
     }
   </script>
 </body>
