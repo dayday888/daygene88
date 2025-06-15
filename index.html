@@ -22,7 +22,10 @@
       --accent-color: #4f83cc;
       --hover-color: #336699;
     }
-    * { transition: all 0.3s ease-in-out; }
+
+    * {
+      transition: all 0.3s ease-in-out;
+    }
 
     body {
       font-family: 'Segoe UI', Roboto, sans-serif;
@@ -39,8 +42,6 @@
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      color: white;
-      padding: 20px;
     }
 
     .container {
@@ -58,7 +59,10 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
-    h2, h3 { text-align: center; margin-top: 0; }
+    h2, h3 {
+      text-align: center;
+      margin-top: 0;
+    }
 
     table {
       width: 100%;
@@ -72,7 +76,10 @@
       text-align: center;
     }
 
-    th { background-color: var(--accent-color); color: white; }
+    th {
+      background-color: var(--accent-color);
+      color: white;
+    }
 
     textarea, input, select, button {
       width: 100%;
@@ -86,8 +93,13 @@
       box-sizing: border-box;
     }
 
-    .flex-row { display: flex; gap: 10px; }
-    .flex-row > div { flex: 1; }
+    .flex-row {
+      display: flex;
+      gap: 10px;
+    }
+    .flex-row > div {
+      flex: 1;
+    }
 
     button {
       background-color: var(--accent-color);
@@ -96,7 +108,9 @@
       border: none;
     }
 
-    button:hover { background-color: var(--hover-color); }
+    button:hover {
+      background-color: var(--hover-color);
+    }
 
     .toggle-mode {
       display: flex;
@@ -104,17 +118,20 @@
       margin-bottom: 20px;
     }
 
-    #feedback { color: var(--accent-color); font-weight: bold; }
+    #feedback {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="toggle-mode">
-      <button onclick="document.body.classList.toggle('light-mode')">🌗 Ganti Mode</button>
+      <button onclick="document.body.classList.toggle('light-mode')">🌗 Coba Tekan Disini 🌗</button>
     </div>
 
     <div class="box">
-      <h2>📊 Analisis Tebakan Angka 📊 </h2>
+      <h2>📊 Analisis Tebakan Angka 📊</h2>
       <textarea id="inputTebakan" placeholder="Contoh:
 1234
 4321
@@ -127,10 +144,16 @@
       <table id="hasilTebakan">
         <tr><th>No</th><th>Tebakan</th><th>AS</th><th>KOP</th><th>KEPALA</th><th>EKOR</th></tr>
       </table>
-      <h3>Jumlah Digit </h3>
-      <table><tr><th>AS</th><th>KOP</th><th>KEPALA</th><th>EKOR</th></tr><tr id="jumlahDigit"><td>0</td><td>0</td><td>0</td><td>0</td></tr></table>
+      <h3>Jumlah Digit</h3>
+      <table>
+        <tr><th>AS</th><th>KOP</th><th>KEPALA</th><th>EKOR</th></tr>
+        <tr id="jumlahDigit"><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      </table>
       <h3>Jumlah Line</h3>
-      <table><tr><th>4D</th><th>3D</th><th>2D</th></tr><tr id="jumlahLine"><td>0</td><td>0</td><td>0</td></tr></table>
+      <table>
+        <tr><th>4D</th><th>3D</th><th>2D</th></tr>
+        <tr id="jumlahLine"><td>0</td><td>0</td><td>0</td></tr>
+      </table>
       <p><strong>AS:</strong> <span id="listAs"></span></p>
       <p><strong>KOP:</strong> <span id="listKop"></span></p>
       <p><strong>KEPALA:</strong> <span id="listKepala"></span></p>
@@ -207,10 +230,12 @@
       document.getElementById("listKepala").textContent = unique(KEPALA).join(', ');
       document.getElementById("listEkor").textContent = unique(EKOR).join(', ');
     }
+
     function toggleTebakan() {
       const table = document.getElementById("hasilTebakan");
       table.style.display = table.style.display === "none" ? "table" : "none";
     }
+
     function getPermutations(input, length) {
       const result = new Set();
       function permute(path, used) {
@@ -230,6 +255,7 @@
       permute([], []);
       return Array.from(result);
     }
+
     function GeneratePermutations() {
       const input = document.getElementById("inputstring").value.trim();
       const maxWidth = parseInt(document.getElementById("maxwidth").value);
@@ -246,14 +272,17 @@
       resultArea.value = results.join("\n");
       feedback.textContent = results.length + " kombinasi";
     }
+
     function ClearReset() {
       document.getElementById("inputstring").value = "";
       document.getElementById("permlist").value = "";
       document.getElementById("feedback").textContent = "";
     }
+
     function cartesian(arrays) {
       return arrays.reduce((a, b) => a.flatMap(d => b.map(e => d + e)));
     }
+
     function generateCombinations() {
       const as = document.getElementById('r1').value.split('');
       const kop = document.getElementById('r2').value.split('');
