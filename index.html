@@ -283,29 +283,32 @@
     }
 
     function generateCombinations() {
-      const as = document.getElementById('r1').value.split('');
-      const kop = document.getElementById('r2').value.split('');
-      const kepala = document.getElementById('r3').value.split('');
-      const ekor = document.getElementById('r4').value.split('');
-      const beli4d = parseInt(document.getElementById('beli-4dset').value || 0);
-      const beli3d = parseInt(document.getElementById('beli-3dset').value || 0);
-      const beli2d = parseInt(document.getElementById('beli-2dset').value || 0);
-      const comb4D = cartesian([as, kop, kepala, ekor]);
-      const comb3D = cartesian([kop, kepala, ekor]);
-      const comb2Ddpn = cartesian([as, kop]);
-      const comb2Dtgh = cartesian([kop, kepala]);
-      const comb2Dblkg = cartesian([kepala, ekor]);
-      const format = (arr, perLine = 10) => arr.map((v, i) => ((i % perLine === 0 && i !== 0) ? '\n' : '') + v).join(' : ');
-      document.getElementById("output").innerHTML = `
-        <table>
-          <tr><th>Jumlah</th><th>Kombinasi</th><th>Total</th></tr>
-          <tr><td>${comb4D.length}</td><td>${format(comb4D)}</td><td>${beli4d * comb4D.length}</td></tr>
-          <tr><td>${comb3D.length}</td><td>${format(comb3D)}</td><td>${beli3d * comb3D.length}</td></tr>
-          <tr><td>2D Depan ${comb2Ddpn.length}</td><td>${format(comb2Ddpn)}</td><td>${beli2d * comb2Ddpn.length}</td></tr>
-          <tr><td>2D Tengah ${comb2Dtgh.length}</td><td>${format(comb2Dtgh)}</td><td>${beli2d * comb2Dtgh.length}</td></tr>
-          <tr><td>2D Belakang ${comb2Dblkg.length}</td><td>${format(comb2Dblkg)}</td><td>${beli2d * comb2Dblkg.length}</td></tr>
-        </table>`;
-    }
+    const as = document.getElementById('r1').value.split('');
+    const kop = document.getElementById('r2').value.split('');
+    const kepala = document.getElementById('r3').value.split('');
+    const ekor = document.getElementById('r4').value.split('');
+    const beli4d = parseInt(document.getElementById('beli-4dset').value || 0);
+    const beli3d = parseInt(document.getElementById('beli-3dset').value || 0);
+    const beli2d = parseInt(document.getElementById('beli-2dset').value || 0);
+
+    const comb4D = cartesian([as, kop, kepala, ekor]);
+    const comb3D = cartesian([kop, kepala, ekor]);
+    const comb2Ddpn = cartesian([as, kop]);
+    const comb2Dtgh = cartesian([kop, kepala]);
+    const comb2Dblkg = cartesian([kepala, ekor]);
+
+    const format = (arr, perLine = 10) => arr.map((v, i) => ((i % perLine === 0 && i !== 0) ? '\n' : '') + v).join(' : ');
+
+    document.getElementById("output").innerHTML = `
+      <table>
+        <tr><th>Jumlah</th><th>Kombinasi</th><th>Total</th></tr>
+        <tr><td>${comb4D.length.toLocaleString('id-ID')}</td><td>${format(comb4D)}</td><td>${(beli4d * comb4D.length).toLocaleString('id-ID')}</td></tr>
+        <tr><td>${comb3D.length.toLocaleString('id-ID')}</td><td>${format(comb3D)}</td><td>${(beli3d * comb3D.length).toLocaleString('id-ID')}</td></tr>
+        <tr><td>2D Depan ${comb2Ddpn.length.toLocaleString('id-ID')}</td><td>${format(comb2Ddpn)}</td><td>${(beli2d * comb2Ddpn.length).toLocaleString('id-ID')}</td></tr>
+        <tr><td>2D Tengah ${comb2Dtgh.length.toLocaleString('id-ID')}</td><td>${format(comb2Dtgh)}</td><td>${(beli2d * comb2Dtgh.length).toLocaleString('id-ID')}</td></tr>
+        <tr><td>2D Belakang ${comb2Dblkg.length.toLocaleString('id-ID')}</td><td>${format(comb2Dblkg)}</td><td>${(beli2d * comb2Dblkg.length).toLocaleString('id-ID')}</td></tr>
+      </table>`;
+  }
   </script>
 </body>
 </html>
