@@ -71,3 +71,11 @@
   </script>
 </body>
 </html>
+
+// letak di index.html
+<script>
+  // Jika belum login, kembali ke halaman login
+  if (localStorage.getItem('loggedIn') !== 'true') {
+    window.location.href = 'login.html';
+  }
+</script>
