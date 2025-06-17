@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  <script>
+  // Jika belum login, kembali ke halaman login
+  if (localStorage.getItem('loggedIn') !== 'true') {
+    window.location.href = 'login.html';
+  }
+</script>
   <meta charset="UTF-8" />
   <title>Analisis & Generator Kombinasi</title>
   <link rel="icon" type="image/png" href="favicon.png">
